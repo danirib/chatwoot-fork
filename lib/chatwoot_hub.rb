@@ -23,7 +23,7 @@ class ChatwootHub
   end
 
   def self.pricing_plan_quantity
-    1 # InstallationConfig.find_by(name: 'INSTALLATION_PRICING_PLAN_QUANTITY')&.value || 0
+    1000 # InstallationConfig.find_by(name: 'INSTALLATION_PRICING_PLAN_QUANTITY')&.value || 0
   end
 
   def self.support_config
