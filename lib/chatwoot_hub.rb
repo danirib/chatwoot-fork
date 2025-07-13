@@ -74,7 +74,7 @@ class ChatwootHub
       parsed_response = {
         version: Chatwoot.config[:version],
         plan: "enterprise",
-        plan_quantity: 100000,
+        plan_quantity: 10000,
         chatwoot_support_identifier_hash: random_string(64),
         chatwoot_support_website_token: random_string(24),
         chatwoot_support_script_url: "https://app.chatwoot.com"   
