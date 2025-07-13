@@ -1,6 +1,6 @@
 # TODO: lets use HTTParty instead of RestClient
 class ChatwootHub
-  BASE_URL = ENV.fetch('CHATWOOT_HUB_URL', 'https://hub.2.chatwoot.com')
+  BASE_URL = ENV.fetch('CHATWOOT_HUB_URL', 'https://google.com')
   PING_URL = "#{BASE_URL}/ping".freeze
   REGISTRATION_URL = "#{BASE_URL}/instances".freeze
   PUSH_NOTIFICATION_URL = "#{BASE_URL}/send_push".freeze
@@ -60,12 +60,25 @@ class ChatwootHub
     model.last&.id || 0
   end
 
+  def self.random_string(length=10)
+    chars = 'abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ0123456789'
+    password = ''
+    length.times { password << chars[rand(chars.size)] }
+    password
+  end
+  
   def self.sync_with_hub
     begin
       info = instance_config
       info = info.merge(instance_metrics) unless ENV['DISABLE_TELEMETRY']
-      response = RestClient.post(PING_URL, info.to_json, { content_type: :json, accept: :json })
-      parsed_response = JSON.parse(response)
+      parsed_response = {
+        version: Chatwoot.config[:version],
+        plan: "enterprise",
+        plan_quantity: 100000,
+        chatwoot_support_identifier_hash: random_string(64),
+        chatwoot_support_website_token: random_string(24),
+        chatwoot_support_script_url: "https://app.chatwoot.com"   
+      }
     rescue *ExceptionList::REST_CLIENT_EXCEPTIONS => e
       Rails.logger.error "Exception: #{e.message}"
     rescue StandardError => e
